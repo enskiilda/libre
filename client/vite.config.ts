@@ -8,9 +8,6 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
-const backendPort = process.env.BACKEND_PORT && Number(process.env.BACKEND_PORT) || 3080;
-const backendURL = process.env.HOST ? `http://${process.env.HOST}:${backendPort}` : `http://localhost:${backendPort}`;
-
 export default defineConfig(({ command }) => ({
   base: '',
   server: {
@@ -18,16 +15,6 @@ export default defineConfig(({ command }) => ({
     host: process.env.HOST || 'localhost',
     port: process.env.PORT && Number(process.env.PORT) || 3090,
     strictPort: false,
-    proxy: {
-      '/api': {
-        target: backendURL,
-        changeOrigin: true,
-      },
-      '/oauth': {
-        target: backendURL,
-        changeOrigin: true,
-      },
-    },
   },
   // Set the directory where environment variables are loaded from and restrict prefixes
   envDir: '../',
@@ -54,7 +41,6 @@ export default defineConfig(({ command }) => ({
         ],
         globIgnores: ['images/**/*', '**/*.map', 'index.html'],
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
-        navigateFallbackDenylist: [/^\/oauth/, /^\/api/],
       },
       includeAssets: [],
       manifest: {
